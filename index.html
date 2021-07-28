@@ -1,0 +1,46 @@
+<!-------------------------
+* Title: index.html
+*  Author: Alex Haefner
+* Date: 07-27-2021
+* Description: Index page
+----------------------------
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title> Home </title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <div class="message-box">
+    <h1 id="welcome-message"></h1>
+    <a href="/private">Go to private area</a>
+  </div>
+
+
+
+  <script>
+    //Instantiating the request object
+    const req = new XMLHttpRequest();
+
+    //Setting the onreadystatechange property w/ the function that will be called after we get our answer back
+    //The callback is checking if we got a successful response, if so we parse response & get user object (the one sent in the /user route)
+    //then find the welcome-message element to set it's innertext to a username
+    req.onreadystatechange = function () {
+      if (req.readyState == 4 && req.status == 200) {
+        const user = JSON.parse(req.response).user;
+        document.getElementById("welcome-message").innerText = `Welcome ${user.username}!!`;
+      }
+    };
+
+    //Open the GET request to the user URL, set the last param to true to make it asynchronous
+    req.open("GET", "http://localhost:3000/user", true);
+
+    //Sending the request
+    req.send();
+  </script>
+</body>
+</html>
